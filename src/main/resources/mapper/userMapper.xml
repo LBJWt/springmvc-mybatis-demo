@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smd.demo.mapper.UserMapper">
+
+	<!-- 将User类和数据库实体对应起来，作为返回类型 -->
+	<resultMap type="User" id="userResult">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<result column="email" property="email"/>
+		<result column="create_date" property="createDate"/>
+		<result column="modify_date" property="modifyDate"/>
+	</resultMap>
+	
+	<!-- 插入 -->
+	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO smd_user(name, password, email, create_date, modify_date) 
+		VALUES(#{name}, #{password}, #{email}, #{createDate}, #{modifyDate})
+	</insert>
+	
+	<!-- 删除一个 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		DELETE FROM smd_user 
+		WHERE id = #{value}
+	</delete>
+	
+	<!-- 删除多个 -->
+	<delete id="deleteList">
+		DELETE FROM smd_user 
+		WHERE id IN 
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 更新 -->
+	<update id="update" parameterType="java.lang.String">
+		UPDATE smd_user
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="email != null and email != ''">
+				email = #{email},
+			</if>
+			<if test="modifyDate != null and modifyDate != ''">
+				modify_date = #{modifyDate}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 查询总数 -->
+	<select id="selectCount" parameterType="User" resultType="java.lang.Integer">
+		SELECT COUNT(0) 
+		FROM smd_user 
+		<where>
+			<!-- 如果有条件，则用条件进行模糊查询 -->
+			<if test="name != null and name != ''">
+				name LIKE CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+			<if test="email != null and email != ''">
+				<!-- 模糊查询 -->
+				AND email LIKE CONCAT(CONCAT('%', #{email}), '%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="selectList" parameterType="User" resultMap="userResult">
+		SELECT * 
+		FROM smd_user 
+		<where><!-- 多个条件时可以用where标签 -->
+			<if test="name != null and name != ''">
+				<!-- 模糊查询 -->
+				name LIKE CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+			<if test="email != null and email != ''">
+				<!-- 模糊查询 -->
+				AND email LIKE CONCAT(CONCAT('%', #{email}), '%')
+			</if>
+		</where>
+		limit #{startRow}, #{rows}
+	</select>
+	
+	<!-- 查询用户名和密码是否正确，用于登录 -->
+	<select id="queryForLogin" parameterType="User" resultMap="userResult">
+		SELECT * 
+		FROM smd_user 
+		WHERE name = #{name} 
+			AND password = #{password} 
+	</select>
+	
+	<!-- 查询用户名是否存在-->
+	<select id="queryUserName" parameterType="User" resultMap="userResult">
+		<!-- 在注册、添加、编辑时用到：如果是新用户，id为0；如果是编辑用户，则用户的原用户名也可以使用 -->
+		SELECT * 
+		FROM smd_user 
+		WHERE name = #{name} 
+			AND id != #{id}
+	</select>
+	
+</mapper>

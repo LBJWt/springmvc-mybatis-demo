@@ -1,0 +1,65 @@
+java：
+	- 基本遵循Google Java Style，参考：Google Java编程风格指南.docx，或访问http://www.cnblogs.com/lanxuezaipiao/p/3534447.html
+	- 缩进使用4字符的制表符，而不是两个空格
+	- MyEclipse下，Window->Preferences->Java->Code Style->formatter界面中，制定并导出一份代码格式的xml（java code style.xml），以这个为标准导入到其他电脑上，就能使用Ctrl+Shift+F统一调整格式了
+	- 类成员顺序：属性->构造方法->setter/getter->覆写的父类方法->按某种逻辑排序的业务方法，如按增删改查顺序，按一个功能的操作步骤顺序等，方法较多时，这个顺序最好在注释中说明
+	- 从方法中抽取出来的私有方法，写在第一次被调用的方法之下，如果有多个这样的方法，则按被调用的次序排序
+	- Controller、Service、Mapper的类名和对象名分别以Controller、Service、Mapper为后缀
+	- Model不需要后缀（BaseModel除外），用能表示实体的名词或词组即可，单词选用要与数据库的实体表字段一致
+	- 接口的类名要以I为前缀（mapper除外）
+	- 注释：
+		- 类中的每个成员属性应该有注释说明
+		- 重要的判断条件和操作需要有注释说明
+		- 关键或复杂难懂的代码块，要在代码块的开始处注释“xxx start”，结束处注释“xxx end”，该注释单独成行
+		- 每个public类及它的每个public和protected成员处都应该使用Javadoc注释，getter、setter和重载方法除外，private方法最好也加上
+	- 例：User.java，UserMapper.java，UserService，java，UserController.java
+	- SQL语句：
+		- 语句中出现的所有表名、字段名全部小写，系统保留字、内置函数名、sql保留字大写
+		- sql保留字（除连接符）另起一行书写
+		- WHERE、HAVING的条件子句每个条件占一行
+		- 复杂的sql语句加上注释，说明功能、语法，注释单独成行，写在语句之前
+		- 例：userMapper.xml
+	- 异常处理：
+		- 表单类的请求使用ajax提交，提交过程中发生异常不跳转页面，而是直接在页面提示异常信息，方便用户重填表单，如果提交后需要跳转页面，在js中进行跳转
+		- 无表单的请求，异常信息抛出由spring的异常处理机制统一处理，跳转到统一的异常信息显示页面，参看BackExceptionHandler.java
+		- 每个模块自定义一个异常类，以便对不同模块的异常做特殊处理
+	- 日志：
+		- 使用log4j记录程序运行日志
+		- 日志文件保存在程序根目录下的logs目录下
+		- 日志需要记录mybatis的sql语句和参数，也需要记录程序运行的关键步骤
+		- 异常信息在自定义异常初始化时写入日志，参看BaseException.java，BackExceptionHandler.java
+
+数据库：
+	- 表名使用小写英文单词，多个单词以“_”分隔，尽量使用完整的单词，如果字段名超过30个字符，可以使用自定义的单词缩写，单词缩写需要在文档中说明
+	- 表名以系统或模块名作为前缀
+	- 字段名使用小写英文单词，多个单词以“_”分隔，尽量使用完整的单词，如果字段名超过30个字符，可以使用自定义的单词缩写，单词缩写需要在文档中说明
+	- 索引名格式为：idx_'table'_'column'...，其中table为表名，column为索引字段，如果索引名超过30字符，可以用缩写的字段减少索引名的长度
+	- 主键名格式：pk_'table'，table为表名
+	- 外键名格式：fk_'ptable'_'ctable'，ptable为父表，ctable为子表
+	- 设计规范：
+		- 表中的字段，如无必要，除日期等类型外，均不允许为空值，字符类型的字段一般默认为空字符串，数值类型的字段一般默认为0，日期类型默认为NULL
+		- 逻辑型字段用0表示“假”，1表示“真”；枚举型字段用数值表示各枚举值，并在注释中说明各值代表的含义
+		- 表内字段与其他表的关键字相关联的，需要建索引
+
+jsp：
+	- 文件名使用小写英文单词或缩写，多个单词用“_”分隔
+	- 数据显示页面最好能说明显示的信息，如user_list.jsp
+	- 操作处理页面以“名词_动词”格式命名，如user_edit.jsp
+	- 同一个模块的文件归到一个目录内
+	- html元素：
+		- javascript和css代码写在单独的js和css文件内
+		- 引入的js和css文件，如无必要，都在<head>内定义，且js文件统一放在css之上，以便查找
+		- 非表单元素如果有id属性，则要在id名后加上属性名，如<div id="loginDiv">，<form id="addUserForm">
+		- 表格如果要用到datagrid，id名加上datagrid后缀，如<table id="userDatagrid">
+		- 表单元素如果有id属性，id一般以“动词+name属性值”命名，如<input id="addUserName" name="userName">
+		- <form>标签必须有注释，<div>、<table>等标签根据需要加注释
+		- MyEclipse下，Window->Preferences->MyEclipse->Files and Editors->HTML->HTML Source，把HTML的line width改大，XML类似，这样就能使用Ctrl+Shift+F调整格式了
+
+js：
+	- 文件名使用小写英文单词或缩写，用“-”作为分隔符，如easyui-util.js
+	- js文件应该与jsp文件对应，js和jsp的文件目录划分也应该一致，第三方插件和库统一放在common目录下
+	- js的函数应该有注释，说明函数功能
+	
+css：
+	- 文件名使用小写英文单词或缩写，多个单词不使用分隔符，如userlist.css
+	- css文件应该与jsp文件对应，css和jsp的文件目录划分也应该一致，通用样式放在common目录下

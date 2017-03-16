@@ -1,0 +1,7 @@
+在Eclipse/MyEclipse下生成javadoc：
+1. Project->Generate Javadoc...
+2. Javadoc Command：选择%JAVA_HOME%/bin/javadoc.exe
+3. Use standard doclet，Destination中选择要存放javadoc的目录
+4. next，next
+5. Extra javadoc options：填写“-encoding UTF-8 -charset UTF-8”，解决中文乱码问题
+6. Finish

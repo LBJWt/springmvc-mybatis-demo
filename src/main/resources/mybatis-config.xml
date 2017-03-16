@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.1.1//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<!-- 
+		配置package，里面的类就不用一个个配了
+		这样配置后就可以在mapper里直接使用类名作为parameterType了
+		 -->
+		<package name="com.smd.demo.model" />
+	</typeAliases>
+</configuration>

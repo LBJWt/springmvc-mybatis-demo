@@ -1,0 +1,5 @@
+1. svn地址：svn://192.9.9.16/dev/TYKY/spring_mvc-mybatis-demo
+2. 检出项目时选择根目录：svn://192.9.9.16/dev/TYKY/spring_mvc-mybatis-demo
+3. 导入如果不能配置buildpath，MyEclipse下右键项目 -> Maven -> Enable Dependency Management，Eclipse下右键项目-> Configure -> Convert to Maven Project
+4. jdk版本：1.6或以上，在buildpath和项目properties -> Project Facets中调整
+5. tomcat版本：6.x或以上
